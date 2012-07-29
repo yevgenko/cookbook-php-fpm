@@ -90,3 +90,7 @@ pkgs.each do |pkg|
     action :upgrade
   end
 end
+
+service "php5-fpm" do
+  action [ :enable, :start ]
+end
