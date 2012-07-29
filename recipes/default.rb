@@ -21,16 +21,18 @@
 case node['platform']
 when 'ubuntu'
   if node['platform_version'].to_f <= 10.04
-    # Configure Nginx PPA
-    # We'll install php5-fpm from the Nginx PPA backports
-    apt_repository "nginx-php" do
-      uri "http://ppa.launchpad.net/nginx/php5/ubuntu"
+    # Configure Brian's PPA
+    # We'll install php5-fpm from the Brian's PPA backports
+    apt_repository "brianmercer-php" do
+      uri "http://ppa.launchpad.net/brianmercer/php5/ubuntu"
       distribution node['lsb']['codename']
       components ["main"]
       keyserver "keyserver.ubuntu.com"
-      key "C300EE8C"
+      key "8D0DC64F"
       action :add
     end
+    # FIXME: apt-get update didn't trigger in above
+    execute "apt-get update"
   end
 when 'debian'
   # Configure Dotdeb repos
