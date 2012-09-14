@@ -31,8 +31,6 @@ when 'ubuntu'
       key "8D0DC64F"
       action :add
     end
-    # FIXME: apt-get update didn't trigger in above
-    execute "apt-get update"
   end
 when 'debian'
   # Configure Dotdeb repos
@@ -85,6 +83,8 @@ pkgs = value_for_platform(
 unless platform?(%w{ centos redhat fedora })
   # TODO: look into the php53u-*/php53-* conflict
   require_recipe 'php::default'
+  # refresh package sources
+  execute "apt-get update"
 end
 
 pkgs.each do |pkg|
