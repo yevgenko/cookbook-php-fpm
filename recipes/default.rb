@@ -81,10 +81,10 @@ pkgs = value_for_platform(
 )
 
 unless platform?(%w{ centos redhat fedora })
-  # TODO: look into the php53u-*/php53-* conflict
-  require_recipe 'php::default'
   # refresh package sources
   execute "apt-get update"
+  # TODO: look into the php53u-*/php53-* conflict
+  require_recipe 'php::default'
 end
 
 pkgs.each do |pkg|
