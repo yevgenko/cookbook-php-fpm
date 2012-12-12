@@ -79,6 +79,9 @@ pkgs = value_for_platform(
   %w{ debian ubuntu } => {
     "default" => %w{ php5-cgi php5-fpm }
   },
+  %w{ amazon } => {
+    "default" => %w{ php-fpm }
+  },
   "default" => %w{ php5-cgi php5-fpm }
 )
 
@@ -93,6 +96,14 @@ pkgs.each do |pkg|
   end
 end
 
-service "php5-fpm" do
+if node['platform'] == 'amazon' then
+  php_fpm_service_name = "php-fpm"
+else
+  php_fpm_service_name = "php5-fpm"
+end
+
+service php_fpm_service_name do
   action [ :enable, :start ]
 end
+
+
