@@ -77,12 +77,12 @@ pkgs = value_for_platform(
     "default" => %w{ php53u-fpm and php53u-pecl-apc }
   },
   %w{ debian ubuntu } => {
-    "default" => %w{ php5-cgi php5-fpm }
+    "default" => %w{ php5-fpm }
   },
   %w{ amazon } => {
     "default" => %w{ php-fpm }
   },
-  "default" => %w{ php5-cgi php5-fpm }
+  "default" => %w{ php5-fpm }
 )
 
 pkgs.each do |pkg|
