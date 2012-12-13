@@ -8,6 +8,6 @@ version          "0.2.5"
 depends "apt"
 depends "yum"
 
-%w{ debian ubuntu centos redhat fedora }.each do |os|
+%w{ debian ubuntu centos redhat fedora amazon }.each do |os|
   supports os
 end
