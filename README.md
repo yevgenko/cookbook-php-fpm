@@ -16,7 +16,6 @@ Platform
 Cookbooks
 ---------
 
-* php
 * apt (leverages apt_repository LWRP)
 * yum (leverages yum_repository LWRP)
 
