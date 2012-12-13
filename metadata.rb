@@ -5,7 +5,6 @@ description      "Installs/Configures php-fpm"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          "0.2.4"
 
-depends "php"
 depends "apt"
 depends "yum"
 

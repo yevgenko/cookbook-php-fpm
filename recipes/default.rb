@@ -85,11 +85,6 @@ pkgs = value_for_platform(
   "default" => %w{ php5-cgi php5-fpm }
 )
 
-unless platform?(%w{ centos redhat fedora })
-  # TODO: look into the php53u-*/php53-* conflict
-  require_recipe 'php::default'
-end
-
 pkgs.each do |pkg|
   package pkg do
     action :upgrade
@@ -105,5 +100,3 @@ end
 service php_fpm_service_name do
   action [ :enable, :start ]
 end
-
-
