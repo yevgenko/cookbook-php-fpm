@@ -62,7 +62,7 @@ when 'debian'
       action :add
     end
   end
-when 'centos', 'redhat', 'fedora'
+when 'centos', 'redhat'
   # Configure IUS repo
   # http://rob.olmos.name/2010/08/centos-5-5-php-5-3-3-php-fpm-nginx-rpms/
   # TODO: verify this is the best repo
@@ -73,8 +73,11 @@ when 'centos', 'redhat', 'fedora'
 end
 
 pkgs = value_for_platform(
-  %w{ centos redhat fedora } => {
+  %w{ centos redhat } => {
     "default" => %w{ php53u-fpm and php53u-pecl-apc }
+  },
+  %w{ fedora } => {
+    "default" => %w{ php-fpm }
   },
   %w{ debian ubuntu } => {
     "default" => %w{ php5-fpm }
@@ -91,7 +94,7 @@ pkgs.each do |pkg|
   end
 end
 
-if node['platform'] == 'amazon' then
+if node['platform'] == 'amazon' or node['platform'] == 'fedora' then
   php_fpm_service_name = "php-fpm"
 else
   php_fpm_service_name = "php5-fpm"
