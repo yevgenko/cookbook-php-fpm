@@ -19,71 +19,70 @@
 #
 
 case node['platform']
-when 'ubuntu'
-  if node['platform_version'].to_f <= 10.04
-    # Configure Brian's PPA
-    # We'll install php5-fpm from the Brian's PPA backports
-    apt_repository "brianmercer-php" do
-      uri "http://ppa.launchpad.net/brianmercer/php5/ubuntu"
-      distribution node['lsb']['codename']
-      components ["main"]
-      keyserver "keyserver.ubuntu.com"
-      key "8D0DC64F"
+  when 'ubuntu'
+    if node['platform_version'].to_f <= 10.04
+      # Configure Brian's PPA
+      # We'll install php5-fpm from the Brian's PPA backports
+      apt_repository "brianmercer-php" do
+        uri "http://ppa.launchpad.net/brianmercer/php5/ubuntu"
+        distribution node['lsb']['codename']
+        components ["main"]
+        keyserver "keyserver.ubuntu.com"
+        key "8D0DC64F"
+        action :add
+      end
+      # FIXME: apt-get update didn't trigger in above
+      execute "apt-get update"
+    end
+  when 'debian'
+    # Configure Dotdeb repos
+    # TODO: move this to it's own 'dotdeb' cookbook?
+    # http://www.dotdeb.org/instructions/
+    if node.platform_version.to_f >= 5.0
+      apt_repository "dotdeb" do
+        uri "http://packages.dotdeb.org"
+        distribution "stable"
+        components ['all']
+        key "http://www.dotdeb.org/dotdeb.gpg"
+        action :add
+      end
+    else
+      apt_repository "dotdeb" do
+        uri "http://packages.dotdeb.org"
+        distribution "oldstable"
+        components ['all']
+        key "http://www.dotdeb.org/dotdeb.gpg"
+        action :add
+      end
+      apt_repository "dotdeb-php53" do
+        uri "http://php53.dotdeb.org"
+        distribution "oldstable"
+        components ['all']
+        key "http://www.dotdeb.org/dotdeb.gpg"
+        action :add
+      end
+    end
+
+  when 'centos', 'redhat'
+    yum_key 'RPM-GPG-KEY-remi' do
+      url 'http://rpms.famillecollet.com/RPM-GPG-KEY-remi'
+    end
+
+    yum_repository 'remi' do
+      description 'Remi'
+      url 'http://rpms.famillecollet.com/enterprise/$releasever/remi/$basearch/'
+      mirrorlist 'http://rpms.famillecollet.com/enterprise/$releasever/remi/mirror'
+      key 'RPM-GPG-KEY-remi'
       action :add
     end
-    # FIXME: apt-get update didn't trigger in above
-    execute "apt-get update"
-  end
-when 'debian'
-  # Configure Dotdeb repos
-  # TODO: move this to it's own 'dotdeb' cookbook?
-  # http://www.dotdeb.org/instructions/
-  if node.platform_version.to_f >= 5.0
-    apt_repository "dotdeb" do
-      uri "http://packages.dotdeb.org"
-      distribution "stable"
-      components ['all']
-      key "http://www.dotdeb.org/dotdeb.gpg"
-      action :add
-    end
-  else
-    apt_repository "dotdeb" do
-      uri "http://packages.dotdeb.org"
-      distribution "oldstable"
-      components ['all']
-      key "http://www.dotdeb.org/dotdeb.gpg"
-      action :add
-    end
-    apt_repository "dotdeb-php53" do
-      uri "http://php53.dotdeb.org"
-      distribution "oldstable"
-      components ['all']
-      key "http://www.dotdeb.org/dotdeb.gpg"
-      action :add
-    end
-  end
-when 'centos', 'redhat'
-  # Configure IUS repo
-  # http://rob.olmos.name/2010/08/centos-5-5-php-5-3-3-php-fpm-nginx-rpms/
-  # TODO: verify this is the best repo
-  yum_repository "ius" do
-    url "http://dl.iuscommunity.org/pub/ius/stable/Redhat/5.5/$basearch"
-    action :add
-  end
 end
 
 pkgs = value_for_platform(
-  %w{ centos redhat } => {
-    "default" => %w{ php53u-fpm and php53u-pecl-apc }
-  },
-  %w{ fedora } => {
+  %w{ centos redhat fedora amazon } => {
     "default" => %w{ php-fpm }
   },
   %w{ debian ubuntu } => {
     "default" => %w{ php5-fpm }
-  },
-  %w{ amazon } => {
-    "default" => %w{ php-fpm }
   },
   "default" => %w{ php5-fpm }
 )
@@ -94,10 +93,11 @@ pkgs.each do |pkg|
   end
 end
 
-if node['platform'] == 'amazon' or node['platform'] == 'fedora' then
-  php_fpm_service_name = "php-fpm"
-else
-  php_fpm_service_name = "php5-fpm"
+case node['platform']
+  when 'amazon', 'fedora', 'centos', 'redhat'
+    php_fpm_service_name = "php-fpm"
+  else
+    php_fpm_service_name = "php5-fpm"
 end
 
 service php_fpm_service_name do
