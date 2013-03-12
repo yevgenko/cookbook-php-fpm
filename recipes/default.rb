@@ -19,88 +19,88 @@
 #
 
 case node['platform']
-  when 'ubuntu'
-    if node['platform_version'].to_f <= 10.04
-      # Configure Brian's PPA
-      # We'll install php5-fpm from the Brian's PPA backports
-      apt_repository "brianmercer-php" do
-        uri "http://ppa.launchpad.net/brianmercer/php5/ubuntu"
-        distribution node['lsb']['codename']
-        components ["main"]
-        keyserver "keyserver.ubuntu.com"
-        key "8D0DC64F"
-        action :add
-      end
-      # FIXME: apt-get update didn't trigger in above
-      execute "apt-get update"
-    end
-  when 'debian'
-    # Configure Dotdeb repos
-    # TODO: move this to it's own 'dotdeb' cookbook?
-    # http://www.dotdeb.org/instructions/
-    if node.platform_version.to_f >= 5.0
-      apt_repository "dotdeb" do
-        uri "http://packages.dotdeb.org"
-        distribution "stable"
-        components ['all']
-        key "http://www.dotdeb.org/dotdeb.gpg"
-        action :add
-      end
-    else
-      apt_repository "dotdeb" do
-        uri "http://packages.dotdeb.org"
-        distribution "oldstable"
-        components ['all']
-        key "http://www.dotdeb.org/dotdeb.gpg"
-        action :add
-      end
-      apt_repository "dotdeb-php53" do
-        uri "http://php53.dotdeb.org"
-        distribution "oldstable"
-        components ['all']
-        key "http://www.dotdeb.org/dotdeb.gpg"
-        action :add
-      end
-    end
-
-  when 'centos', 'redhat'
-    yum_key 'RPM-GPG-KEY-remi' do
-      url 'http://rpms.famillecollet.com/RPM-GPG-KEY-remi'
-    end
-
-    yum_repository 'remi' do
-      description 'Remi'
-      url 'http://rpms.famillecollet.com/enterprise/$releasever/remi/$basearch/'
-      mirrorlist 'http://rpms.famillecollet.com/enterprise/$releasever/remi/mirror'
-      key 'RPM-GPG-KEY-remi'
+when 'ubuntu'
+  if node['platform_version'].to_f <= 10.04
+    # Configure Brian's PPA
+    # We'll install php5-fpm from the Brian's PPA backports
+    apt_repository "brianmercer-php" do
+      uri "http://ppa.launchpad.net/brianmercer/php5/ubuntu"
+      distribution node['lsb']['codename']
+      components ["main"]
+      keyserver "keyserver.ubuntu.com"
+      key "8D0DC64F"
       action :add
     end
-end
+    # FIXME: apt-get update didn't trigger in above
+    execute "apt-get update"
+  end
+when 'debian'
+  # Configure Dotdeb repos
+  # TODO: move this to it's own 'dotdeb' cookbook?
+  # http://www.dotdeb.org/instructions/
+  if node.platform_version.to_f >= 5.0
+    apt_repository "dotdeb" do
+      uri "http://packages.dotdeb.org"
+      distribution "stable"
+      components ['all']
+      key "http://www.dotdeb.org/dotdeb.gpg"
+      action :add
+    end
+  else
+    apt_repository "dotdeb" do
+      uri "http://packages.dotdeb.org"
+      distribution "oldstable"
+      components ['all']
+      key "http://www.dotdeb.org/dotdeb.gpg"
+      action :add
+    end
+    apt_repository "dotdeb-php53" do
+      uri "http://php53.dotdeb.org"
+      distribution "oldstable"
+      components ['all']
+      key "http://www.dotdeb.org/dotdeb.gpg"
+      action :add
+    end
+  end
 
-pkgs = value_for_platform(
-  %w{ centos redhat fedora amazon } => {
-    "default" => %w{ php-fpm }
-  },
-  %w{ debian ubuntu } => {
-    "default" => %w{ php5-fpm }
-  },
-  "default" => %w{ php5-fpm }
-)
+when 'amazon', 'fedora', 'centos', 'redhat'
+  yum_key 'RPM-GPG-KEY-remi' do
+    url 'http://rpms.famillecollet.com/RPM-GPG-KEY-remi'
+  end
 
-pkgs.each do |pkg|
-  package pkg do
-    action :upgrade
+  yum_repository 'remi' do
+    description 'Remi'
+    url 'http://rpms.famillecollet.com/enterprise/$releasever/remi/$basearch/'
+    mirrorlist 'http://rpms.famillecollet.com/enterprise/$releasever/remi/mirror'
+    key 'RPM-GPG-KEY-remi'
+    action :add
   end
 end
 
-case node['platform']
-  when 'amazon', 'fedora', 'centos', 'redhat'
-    php_fpm_service_name = "php-fpm"
-  else
-    php_fpm_service_name = "php5-fpm"
+if platform_family?("rhel")
+  php_fpm_service_name = "php-fpm"
+else
+  php_fpm_service_name = "php5-fpm"
+end
+
+package php_fpm_service_name do
+  action :upgrade
 end
 
 service php_fpm_service_name do
   supports :status => true, :restart => true, :reload => true
-  action [ :enable, :start ]
+  action [ :enable, :nothing ]
+end
+
+template node['php-fpm']['conf_file'] do
+  source "php-fpm.conf.erb"
+  mode 00644
+  owner "root"
+  group "root"
+end
+
+node['php-fpm']['pools'].each do |pool|
+  fpm_pool pool do
+    php_fpm_service_name php_fpm_service_name
+  end
 end
