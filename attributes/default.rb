@@ -10,7 +10,7 @@ else
   group = "www-data"
   conf_dir = "/etc/php5/fpm"
   conf_file = "/etc/php5/fpm/php-fpm.conf"
-  error_log =  "/var/log/php5-fpm.log"
+  error_log = "/var/log/php5-fpm.log"
   pid ="/var/run/php5-fpm.pid"
 end
 
@@ -22,7 +22,7 @@ default['php-fpm']['log_level'] = "notice"
 
 default['php-fpm']['pools'] = ["www","testpool"]
 
-default['php-fpm']['pool']['www']['listen'] = "/var/run/php-fpm/www.sock"
+default['php-fpm']['pool']['www']['listen'] = "/var/run/php-fpm-www.sock"
 default['php-fpm']['pool']['www']['allowed_clients'] = ["127.0.0.1"]
 default['php-fpm']['pool']['www']['user'] = user
 default['php-fpm']['pool']['www']['group'] = group

@@ -48,9 +48,5 @@ define :fpm_pool, :template => "pool.conf.erb", :enable => true do
     :max_requests => node['php-fpm']['pool'][pool_name]['max_requests'],
     :params => params
     )
-    if ::File.exists?(conf_file)
-      notifies :restart, resources(:service => params[:php_fpm_service_name]), :delayed
-    end
   end
-
 end
