@@ -64,16 +64,18 @@ when 'debian'
   end
 
 when 'amazon', 'fedora', 'centos', 'redhat'
-  yum_key 'RPM-GPG-KEY-remi' do
-    url 'http://rpms.famillecollet.com/RPM-GPG-KEY-remi'
-  end
+  unless platform?('centos', 'redhat') && node['platform_version'].to_f >= 6.4
+    yum_key 'RPM-GPG-KEY-remi' do
+      url 'http://rpms.famillecollet.com/RPM-GPG-KEY-remi'
+    end
 
-  yum_repository 'remi' do
-    description 'Remi'
-    url 'http://rpms.famillecollet.com/enterprise/$releasever/remi/$basearch/'
-    mirrorlist 'http://rpms.famillecollet.com/enterprise/$releasever/remi/mirror'
-    key 'RPM-GPG-KEY-remi'
-    action :add
+    yum_repository 'remi' do
+      description 'Remi'
+      url 'http://rpms.famillecollet.com/enterprise/$releasever/remi/$basearch/'
+      mirrorlist 'http://rpms.famillecollet.com/enterprise/$releasever/remi/mirror'
+      key 'RPM-GPG-KEY-remi'
+      action :add
+    end
   end
 end
 
