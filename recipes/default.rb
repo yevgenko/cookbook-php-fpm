@@ -46,7 +46,7 @@ when 'debian'
       key "http://www.dotdeb.org/dotdeb.gpg"
       action :add
     end
-  elsif node.platform_version.to_f >= 5.0
+  elsif node.platform_version.to_f >= 7.0
     apt_repository "dotdeb" do
       uri "http://packages.dotdeb.org"
       distribution "stable"
