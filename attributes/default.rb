@@ -9,7 +9,11 @@ else
   user = "www-data"
   group = "www-data"
   conf_dir = "/etc/php5/fpm"
-  conf_file = "/etc/php5/fpm/php-fpm.conf"
+  if node.platform == "ubuntu" and node.platform_version.to_f <= 10.04
+    conf_file = "/etc/php5/fpm/php5-fpm.conf"
+  else
+    conf_file = "/etc/php5/fpm/php-fpm.conf"
+  end
   error_log = "/var/log/php5-fpm.log"
   pid ="/var/run/php5-fpm.pid"
 end
