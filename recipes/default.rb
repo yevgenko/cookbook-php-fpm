@@ -102,6 +102,7 @@ template node['php-fpm']['conf_file'] do
   mode 00644
   owner "root"
   group "root"
+  notifies :restart, "service[php-fpm]"
 end
 
 node['php-fpm']['pools'].each do |pool|
