@@ -24,7 +24,7 @@ when 'ubuntu'
     # Configure Brian's PPA
     # We'll install php5-fpm from the Brian's PPA backports
     apt_repository "brianmercer-php" do
-      uri "http://ppa.launchpad.net/brianmercer/php5/ubuntu"
+      uri "http://ppa.launchpad.net/brianmercer/php/ubuntu"
       distribution node['lsb']['codename']
       components ["main"]
       keyserver "keyserver.ubuntu.com"
