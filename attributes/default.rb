@@ -32,6 +32,7 @@ default['php-fpm']['pool']['www']['start_servers'] = 5
 default['php-fpm']['pool']['www']['min_spare_servers'] = 5
 default['php-fpm']['pool']['www']['max_spare_servers'] = 35
 default['php-fpm']['pool']['www']['max_requests'] = 500
+default['php-fpm']['pool']['www']['catch_workers_output'] = "no"
 
 default['php-fpm']['pool']['testpool']['listen'] = "127.0.0.1:9001"
 default['php-fpm']['pool']['testpool']['allowed_clients'] = ["127.0.0.1"]
@@ -43,3 +44,4 @@ default['php-fpm']['pool']['testpool']['start_servers'] = 5
 default['php-fpm']['pool']['testpool']['min_spare_servers'] = 5
 default['php-fpm']['pool']['testpool']['max_spare_servers'] = 35
 default['php-fpm']['pool']['testpool']['max_requests'] = 500
+default['php-fpm']['pool']['testpool']['catch_workers_output'] = "no"

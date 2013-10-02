@@ -182,7 +182,7 @@ pm.max_requests = <%= @max_requests %>
 ; Redirect worker stdout and stderr into main error log. If not set, stdout and
 ; stderr will be redirected to /dev/null according to FastCGI specs.
 ; Default Value: no
-;catch_workers_output = yes
+catch_workers_output = <%= @catch_workers_output %>
 
 ; Limits the extensions of the main script FPM will allow to parse. This can
 ; prevent configuration mistakes on the web server side. You should only limit
