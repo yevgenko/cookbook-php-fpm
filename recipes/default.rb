@@ -18,6 +18,8 @@
 # limitations under the License.
 #
 
+service_provider = nil
+
 case node['platform']
 when 'ubuntu'
   if node['platform_version'].to_f <= 10.04
@@ -33,6 +35,10 @@ when 'ubuntu'
     end
     # FIXME: apt-get update didn't trigger in above
     execute "apt-get update"
+  end
+
+  if node['platform_version'].to_f >= 13.10
+    service_provider = ::Chef::Provider::Service::Upstart
   end
 when 'debian'
   # Configure Dotdeb repos
@@ -111,6 +117,7 @@ node['php-fpm']['pools'].each do |pool|
 end
 
 service "php-fpm" do
+  provider service_provider if service_provider
   service_name php_fpm_service_name
   supports :start => true, :stop => true, :restart => true, :reload => true
   action [ :enable, :restart ]
