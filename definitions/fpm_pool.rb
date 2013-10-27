@@ -49,5 +49,6 @@ define :fpm_pool, :template => "pool.conf.erb", :enable => true do
     :catch_workers_output => node['php-fpm']['pool'][pool_name]['catch_workers_output'],
     :params => params
     )
+    notifies :restart, "service[php-fpm]"
   end
 end
