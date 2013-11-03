@@ -10,7 +10,7 @@
 ;                            specific port;
 ;   '/path/to/unix/socket' - to listen on a unix socket.
 ; Note: This value is mandatory.
-listen = <%= @listen %>
+listen = <%= @listen || "/var/run/php-fpm-#{@pool_name}.sock" %>
 
 ; Set listen(2) backlog. A value of '-1' means unlimited.
 ; Default Value: -1
@@ -22,7 +22,7 @@ listen = <%= @listen %>
 ; must be separated by a comma. If this value is left blank, connections will be
 ; accepted from any ip address.
 ; Default Value: any
-listen.allowed_clients = <%= [@allowed_clients].flatten.join "," %>
+listen.allowed_clients = <%= @allowed_clients ? ([@allowed_clients].flatten.join ",") : "127.0.0.1" %>
 
 ; Set permissions for unix socket, if one is used. In Linux, read/write
 ; permissions must be set in order to allow connections from a web server. Many
@@ -37,9 +37,9 @@ listen.allowed_clients = <%= [@allowed_clients].flatten.join "," %>
 ; Note: The user is mandatory. If the group is not set, the default user's group
 ;       will be used.
 ; RPM: apache Choosed to be able to access some dir as httpd
-user = <%= @user %>
+user = <%= @user || node['php-fpm']['user'] %>
 ; RPM: Keep a group allowed to write in log dir.
-group = <%= @group %>
+group = <%= @group || node['php-fpm']['group'] %>
 
 ; Choose how the process manager will control the number of child processes.
 ; Possible Values:
@@ -58,7 +58,7 @@ group = <%= @group %>
 ;                                    of 'idle' processes is greater than this
 ;                                    number then some children will be killed.
 ; Note: This value is mandatory.
-pm = <%= @process_manager %>
+pm = <%= @process_manager || "ondemand" %>
 
 ; The number of child processes to be created when pm is set to 'static' and the
 ; maximum number of child processes to be created when pm is set to 'dynamic'.
@@ -68,30 +68,30 @@ pm = <%= @process_manager %>
 ; CGI.
 ; Note: Used when pm is set to either 'static' or 'dynamic'
 ; Note: This value is mandatory.
-pm.max_children = <%= @max_children %>
+pm.max_children = <%= @max_children || 50 %>
 
 <% if @process_manager == "dynamic" %>
 ; The number of child processes created on startup.
 ; Note: Used only when pm is set to 'dynamic'
 ; Default Value: min_spare_servers + (max_spare_servers - min_spare_servers) / 2
-pm.start_servers = <%= @start_servers %>
+pm.start_servers = <%= @start_servers || 5 %>
 
 ; The desired minimum number of idle server processes.
 ; Note: Used only when pm is set to 'dynamic'
 ; Note: Mandatory when pm is set to 'dynamic'
-pm.min_spare_servers = <%= @min_spare_servers %>
+pm.min_spare_servers = <%= @min_spare_servers || 5 %>
 
 ; The desired maximum number of idle server processes.
 ; Note: Used only when pm is set to 'dynamic'
 ; Note: Mandatory when pm is set to 'dynamic'
-pm.max_spare_servers = <%= @max_spare_servers %>
+pm.max_spare_servers = <%= @max_spare_servers || 35 %>
 <% end %>
 
 ; The number of requests each child process should execute before respawning.
 ; This can be useful to work around memory leaks in 3rd party libraries. For
 ; endless request processing specify '0'. Equivalent to PHP_FCGI_MAX_REQUESTS.
 ; Default Value: 0
-pm.max_requests = <%= @max_requests %>
+pm.max_requests = <%= @max_requests || 500 %>
 
 ; The URI to view the FPM status page. If this value is not set, no URI will be
 ; recognized as a status page. By default, the status page shows the following
@@ -182,7 +182,7 @@ pm.max_requests = <%= @max_requests %>
 ; Redirect worker stdout and stderr into main error log. If not set, stdout and
 ; stderr will be redirected to /dev/null according to FastCGI specs.
 ; Default Value: no
-catch_workers_output = <%= @catch_workers_output %>
+catch_workers_output = <%= @catch_workers_output || "no" %>
 
 ; Limits the extensions of the main script FPM will allow to parse. This can
 ; prevent configuration mistakes on the web server side. You should only limit

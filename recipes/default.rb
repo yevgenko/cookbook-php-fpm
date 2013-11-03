@@ -105,12 +105,6 @@ template node['php-fpm']['conf_file'] do
   notifies :restart, "service[php-fpm]"
 end
 
-node['php-fpm']['pools'].each do |pool|
-  fpm_pool pool do
-    php_fpm_service_name php_fpm_service_name
-  end
-end
-
 service "php-fpm" do
   service_name php_fpm_service_name
   supports :start => true, :stop => true, :restart => true, :reload => true

@@ -21,29 +21,38 @@ Cookbooks
 
 The `apt_repository` and `yum_repository` LWRPs are used from these cookbooks to create the proper repository entries so the php-fpm package downloaded and installed.
 
-Attributes
+Description
 ==========
 
-TODO: FINISH THIS LWRP
-
-This cookbook includes LWRPs for managing PHP-FPM config files.
-
-`php-fpm_config`
------------------
-
-Creates a PHP-FPM configuration file at the path specified.  Meant to be deployed with a service init scheme/supervisor such as runit.  Please see the `appliation::php-fpm` recipe for a complete working example. In depth information about PHP-FPM's configuration values can be [found in the PHP-FPM documentation](http://php-fpm.org/wiki/Configuration_File).
-
-# Actions
-
-- :create: create a PHP-FPM configuration file.
-- :delete: delete an existing PHP-FPM configuration file.
-
-# Attributes
+Creates a PHP-FPM configuration file at the path specified.  Meant to be deployed with a service init scheme/supervisor such as runit.  Please see the `application::php-fpm` recipe for a complete working example. In depth information about PHP-FPM's configuration values can be [found in the PHP-FPM documentation](http://php-fpm.org/wiki/Configuration_File).
 
 Usage
 =====
-
 Simply include the recipe where you want PHP-FPM installed.
+
+### Create PHP-FPM pool named 'www' with default settings:
+```ruby
+php_fpm_pool "www" do
+  cookbook "php-fpm"
+end
+```
+
+### Create PHP-FPM pool named 'www' with custom settings:
+```ruby
+php_fpm_pool "www" do
+  cookbook "php-fpm"
+  process_manager "dynamic"
+  max_requests 5000
+end
+```
+
+### Delete PHP-FPM pool named 'www':
+```ruby
+php_fpm_pool "www" do
+  cookbook "php-fpm"
+  enable false
+end
+```
 
 License and Author
 ==================
