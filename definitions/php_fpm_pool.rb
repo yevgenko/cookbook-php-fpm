@@ -32,9 +32,7 @@ define :php_fpm_pool, :template => "pool.conf.erb", :enable => true do
       owner "root"
       group "root"
       mode 00644
-      if params[:cookbook]
-        cookbook params[:cookbook]
-      end
+      cookbook params[:cookbook] || "php-fpm"
       variables(
         :pool_name => pool_name,
         :listen => params[:listen],

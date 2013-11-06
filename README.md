@@ -32,15 +32,13 @@ Simply include the recipe where you want PHP-FPM installed.
 
 ### Create PHP-FPM pool named 'www' with default settings:
 ```ruby
-php_fpm_pool "www" do
-  cookbook "php-fpm"
-end
+php_fpm_pool "www"
 ```
 
 ### Create PHP-FPM pool named 'www' with custom settings:
 ```ruby
 php_fpm_pool "www" do
-  cookbook "php-fpm"
+  cookbook "another-cookbook" # get template from another cookbook
   process_manager "dynamic"
   max_requests 5000
 end
@@ -49,7 +47,6 @@ end
 ### Delete PHP-FPM pool named 'www':
 ```ruby
 php_fpm_pool "www" do
-  cookbook "php-fpm"
   enable false
 end
 ```
