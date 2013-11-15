@@ -41,6 +41,7 @@ php_fpm_pool "www" do
   cookbook "another-cookbook" # get template from another cookbook
   process_manager "dynamic"
   max_requests 5000
+  php_options 'php_admin_flag[log_errors]' => 'on', 'php_admin_value[memory_limit]' => '32M'
 end
 ```
 
