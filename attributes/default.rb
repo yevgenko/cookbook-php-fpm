@@ -25,3 +25,6 @@ default['php-fpm']['conf_file'] = conf_file
 default['php-fpm']['pid'] = pid
 default['php-fpm']['error_log'] =  error_log
 default['php-fpm']['log_level'] = "notice"
+default['php-fpm']['emergency_restart_threshold'] = 0
+default['php-fpm']['emergency_restart_interval'] = 0
+default['php-fpm']['process_control_timeout'] = 0
