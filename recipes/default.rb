@@ -117,3 +117,5 @@ service "php-fpm" do
   supports :start => true, :stop => true, :restart => true, :reload => true
   action [ :enable, :start ]
 end
+
+php_fpm_pool "www"
