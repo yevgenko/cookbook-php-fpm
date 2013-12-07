@@ -23,11 +23,11 @@ define :php_fpm_pool, :template => "pool.conf.erb", :enable => true do
 
   include_recipe "php-fpm"
 
-  conf_file = "#{node['php-fpm']['conf_dir']}/pools/#{pool_name}.conf"
+  conf_file = "#{node['php-fpm']['pool_conf_dir']}/#{pool_name}.conf"
 
   if params[:enable]
     template conf_file do
-      only_if "test -d #{node['php-fpm']['conf_dir']}/pools || mkdir -p #{node['php-fpm']['conf_dir']}/pools"
+      only_if "test -d #{node['php-fpm']['pool_conf_dir']} || mkdir -p #{node['php-fpm']['pool_conf_dir']}"
       source params[:template]
       owner "root"
       group "root"

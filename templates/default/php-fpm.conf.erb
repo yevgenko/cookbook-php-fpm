@@ -8,7 +8,7 @@
 ; Include one or more files. If glob(3) exists, it is used to include a bunch of
 ; files from a glob(3) pattern. This directive can be used everywhere in the
 ; file.
-include = <%= "#{node['php-fpm']['conf_dir']}/pools/*.conf" %>
+include = <%= "#{node['php-fpm']['pool_conf_dir']}/*.conf" %>
 
 ;;;;;;;;;;;;;;;;;;
 ; Global Options ;
@@ -56,5 +56,5 @@ daemonize = yes
 ; Pool Definitions ;
 ;;;;;;;;;;;;;;;;;;;;
 
-; See <%= "#{node['php-fpm']['conf_dir']}/pools/*.conf" %>
+; See <%= "#{node['php-fpm']['pool_conf_dir']}/*.conf" %>
 
