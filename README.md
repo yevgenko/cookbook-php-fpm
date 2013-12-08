@@ -28,8 +28,33 @@ Creates a PHP-FPM configuration file at the path specified.  Meant to be deploye
 
 Usage
 =====
-Simply include the recipe where you want PHP-FPM installed.
+Simply include the recipe where you want PHP-FPM installed. Default pool __www__ will be created. To disable pool creation set default['php-fpm']['pools'] to false.
 
+To customize settings and pools you can override default attributes.
+
+### Usage in roles:
+```ruby
+name "php-fpm"
+description "php fpm role"
+run_list "recipe[php-fpm]"
+override_attributes "php-fpm" => {
+	"pools" => [
+		{
+			:name => "default"
+		},
+		{
+			:name => "www",
+			:cookbook => "another-cookbook",
+			:process_manager => "dynamic",
+			:max_requests => 5000,
+			:php_options => { 'php_admin_flag[log_errors]' => 'on', 'php_admin_value[memory_limit]' => '32M' }
+		}
+	]
+}
+```
+
+Creating pools in recipes
+=========================
 ### Create PHP-FPM pool named 'www' with default settings:
 ```ruby
 php_fpm_pool "www"

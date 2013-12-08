@@ -118,4 +118,12 @@ service "php-fpm" do
   action [ :enable, :start ]
 end
 
-php_fpm_pool "www"
+if node['php-fpm']['pools']
+  node['php-fpm']['pools'].each do |pool|
+    php_fpm_pool pool[:name] do
+      pool.each do |k, v|
+        self.params[k.to_sym] = v
+      end
+    end
+  end
+end
