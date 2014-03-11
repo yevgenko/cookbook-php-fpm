@@ -1,6 +1,7 @@
 if node.platform_family == "rhel"
   user = "apache"
   group = "apache"
+  conf_dir = "/etc/php.d"
   pool_conf_dir = "/etc/php-fpm.d"
   conf_file = "/etc/php-fpm.conf"
   error_log = "/var/log/php-fpm/error.log"
@@ -8,6 +9,7 @@ if node.platform_family == "rhel"
 else
   user = "www-data"
   group = "www-data"
+  conf_dir = "/etc/php5/fpm/conf.d"
   pool_conf_dir = "/etc/php5/fpm/pool.d"
   if node.platform == "ubuntu" and node.platform_version.to_f <= 10.04
     conf_file = "/etc/php5/fpm/php5-fpm.conf"
@@ -20,6 +22,7 @@ end
 
 default['php-fpm']['user'] = user
 default['php-fpm']['group'] = group
+default['php-fpm']['conf_dir'] = conf_dir
 default['php-fpm']['pool_conf_dir'] = pool_conf_dir
 default['php-fpm']['conf_file'] = conf_file
 default['php-fpm']['pid'] = pid
