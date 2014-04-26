@@ -85,21 +85,25 @@ when 'amazon', 'fedora', 'centos', 'redhat'
 
     yum_repository 'remi' do
       description 'Remi'
-      url 'http://rpms.famillecollet.com/enterprise/$releasever/remi/$basearch/'
-      mirrorlist 'http://rpms.famillecollet.com/enterprise/$releasever/remi/mirror'
+      url node['php-fpm']['yum_url']
+      mirrorlist node['php-fpm']['yum_mirrorlist']
       key 'RPM-GPG-KEY-remi'
       action :add
     end
   end
 end
 
-if platform_family?("rhel")
-  php_fpm_service_name = "php-fpm"
+if node['php-fpm']['package_name'].nil?
+	if platform_family?("rhel")
+	  php_fpm_package_name = "php-fpm"
+	else
+	  php_fpm_package_name = "php5-fpm"
+	end
 else
-  php_fpm_service_name = "php5-fpm"
+	php_fpm_package_name = node['php-fpm']['package_name']
 end
 
-package php_fpm_service_name do
+package php_fpm_package_name do
   action :upgrade
 end
 
@@ -109,6 +113,12 @@ template node['php-fpm']['conf_file'] do
   owner "root"
   group "root"
   notifies :restart, "service[php-fpm]"
+end
+
+if node['php-fpm']['service_name'].nil?
+	php_fpm_service_name = php_fpm_package_name
+else
+	php_fpm_service_name = node['php-fpm']['service_name']
 end
 
 service "php-fpm" do
