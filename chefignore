@@ -94,3 +94,8 @@ Vagrantfile
 # Travis #
 ##########
 .travis.yml
+
+# Other #
+##########
+.sandbox
+.bundle
