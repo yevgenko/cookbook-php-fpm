@@ -53,8 +53,8 @@ listen.owner = <%= listenOwner %>
 <% end %>
 
 ;listen.group = nobody
-<% unless listenOwner.nil? %>
-listen.group = <%= listenOwner %>
+<% unless listenGroup.nil? %>
+listen.group = <%= listenGroup %>
 <% end %>
 
 listen.mode = 0660
