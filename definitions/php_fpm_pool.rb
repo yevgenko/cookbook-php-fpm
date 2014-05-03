@@ -36,6 +36,8 @@ define :php_fpm_pool, :template => "pool.conf.erb", :enable => true do
       variables(
         :pool_name => pool_name,
         :listen => params[:listen],
+        :listen_owner => params[:listen_owner],
+        :listen_group => params[:listen_group],
         :allowed_clients => params[:allowed_clients],
         :user => params[:user],
         :group => params[:group],
