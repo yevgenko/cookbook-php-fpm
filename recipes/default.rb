@@ -18,93 +18,8 @@
 # limitations under the License.
 #
 
-service_provider = nil
-
-case node['platform']
-when 'ubuntu'
-  if node['platform_version'].to_f <= 10.04
-    # Configure Brian's PPA
-    # We'll install php5-fpm from the Brian's PPA backports
-    apt_repository "brianmercer-php" do
-      uri "http://ppa.launchpad.net/brianmercer/php/ubuntu"
-      distribution node['lsb']['codename']
-      components ["main"]
-      keyserver "keyserver.ubuntu.com"
-      key "8D0DC64F"
-      action :add
-    end
-    # FIXME: apt-get update didn't trigger in above
-    execute "apt-get update"
-  end
-
-  if node['platform_version'].to_f >= 13.10
-    service_provider = ::Chef::Provider::Service::Upstart
-  end
-when 'debian'
-  # Configure Dotdeb repos
-  # TODO: move this to it's own 'dotdeb' cookbook?
-  # http://www.dotdeb.org/instructions/
-  if node.platform_version.to_f >= 7.0
-    apt_repository "dotdeb" do
-      uri "http://packages.dotdeb.org"
-      distribution "stable"
-      components ['all']
-      key "http://www.dotdeb.org/dotdeb.gpg"
-      action :add
-    end
-  elsif node.platform_version.to_f >= 6.0
-    apt_repository "dotdeb" do
-      uri "http://packages.dotdeb.org"
-      distribution "squeeze"
-      components ['all']
-      key "http://www.dotdeb.org/dotdeb.gpg"
-      action :add
-    end
-  else
-    apt_repository "dotdeb" do
-      uri "http://packages.dotdeb.org"
-      distribution "oldstable"
-      components ['all']
-      key "http://www.dotdeb.org/dotdeb.gpg"
-      action :add
-    end
-    apt_repository "dotdeb-php53" do
-      uri "http://php53.dotdeb.org"
-      distribution "oldstable"
-      components ['all']
-      key "http://www.dotdeb.org/dotdeb.gpg"
-      action :add
-    end
-  end
-
-when 'amazon', 'fedora', 'centos', 'redhat'
-  unless platform?('centos', 'redhat') && node['platform_version'].to_f >= 6.4
-    yum_key 'RPM-GPG-KEY-remi' do
-      url 'http://rpms.famillecollet.com/RPM-GPG-KEY-remi'
-    end
-
-    yum_repository 'remi' do
-      description 'Remi'
-      url node['php-fpm']['yum_url']
-      mirrorlist node['php-fpm']['yum_mirrorlist']
-      key 'RPM-GPG-KEY-remi'
-      action :add
-    end
-  end
-end
-
-if node['php-fpm']['package_name'].nil?
-	if platform_family?("rhel")
-	  php_fpm_package_name = "php-fpm"
-	else
-	  php_fpm_package_name = "php5-fpm"
-	end
-else
-	php_fpm_package_name = node['php-fpm']['package_name']
-end
-
-package php_fpm_package_name do
-  action :upgrade
+if node['php-fpm']['install_package'] == true
+  include_recipe 'php-fpm::package'
 end
 
 template node['php-fpm']['conf_file'] do
@@ -116,9 +31,9 @@ template node['php-fpm']['conf_file'] do
 end
 
 if node['php-fpm']['service_name'].nil?
-	php_fpm_service_name = php_fpm_package_name
+  php_fpm_service_name = php_fpm_package_name
 else
-	php_fpm_service_name = node['php-fpm']['service_name']
+  php_fpm_service_name = node['php-fpm']['service_name']
 end
 
 service "php-fpm" do
