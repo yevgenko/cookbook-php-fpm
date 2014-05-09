@@ -18,7 +18,6 @@
 # limitations under the License.
 #
 
-service_provider = nil
 
 case node['platform']
 when 'ubuntu'
@@ -35,10 +34,6 @@ when 'ubuntu'
     end
     # FIXME: apt-get update didn't trigger in above
     execute "apt-get update"
-  end
-
-  if node['platform_version'].to_f >= 13.10
-    service_provider = ::Chef::Provider::Service::Upstart
   end
 when 'debian'
   # Configure Dotdeb repos

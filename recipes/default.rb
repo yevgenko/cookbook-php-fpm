@@ -22,6 +22,11 @@ if node['php-fpm']['skip_repository_install'] == false
   include_recipe 'php-fpm::repository'
 end
 
+service_provider = nil
+if node['platform'] == 'ubuntu' and node['platform_version'].to_f >= 13.10
+  service_provider = ::Chef::Provider::Service::Upstart
+end
+
 if node['php-fpm']['package_name'].nil?
   if platform_family?("rhel")
     php_fpm_package_name = "php-fpm"
