@@ -92,17 +92,3 @@ when 'amazon', 'fedora', 'centos', 'redhat'
     end
   end
 end
-
-if node['php-fpm']['package_name'].nil?
-  if platform_family?("rhel")
-    php_fpm_package_name = "php-fpm"
-  else
-    php_fpm_package_name = "php5-fpm"
-  end
-else
-  php_fpm_package_name = node['php-fpm']['package_name']
-end
-
-package php_fpm_package_name do
-  action :upgrade
-end

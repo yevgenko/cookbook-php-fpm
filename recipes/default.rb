@@ -18,8 +18,22 @@
 # limitations under the License.
 #
 
-if node['php-fpm']['install_package'] == true
-  include_recipe 'php-fpm::package'
+if node['php-fpm']['skip_repository_install'] == false
+  include_recipe 'php-fpm::repository'
+end
+
+if node['php-fpm']['package_name'].nil?
+  if platform_family?("rhel")
+    php_fpm_package_name = "php-fpm"
+  else
+    php_fpm_package_name = "php5-fpm"
+  end
+else
+  php_fpm_package_name = node['php-fpm']['package_name']
+end
+
+package php_fpm_package_name do
+  action :upgrade
 end
 
 template node['php-fpm']['conf_file'] do
