@@ -1,7 +1,7 @@
 #
 # Author::  Seth Chisamore (<schisamo@opscode.com>)
 # Cookbook Name:: php-fpm
-# Recipe:: default
+# Recipe:: package
 #
 # Copyright 2011, Opscode, Inc.
 #
