@@ -57,7 +57,7 @@ listen.owner = <%= listenOwner %>
 listen.group = <%= listenGroup %>
 <% end %>
 
-listen.mode = 0660
+listen.mode = <%= @listen_mode || "0660" %>
 
 ; List of ipv4 addresses of FastCGI clients which are allowed to connect.
 ; Equivalent to the FCGI_WEB_SERVER_ADDRS environment variable in the original
