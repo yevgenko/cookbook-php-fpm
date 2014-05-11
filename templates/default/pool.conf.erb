@@ -42,19 +42,14 @@ listen = <%= @listen || "/var/run/php-fpm-#{@pool_name}.sock" %>
 ; Default Values: user and group are set as the running user
 ;                 mode is set to 0666
 
-<% 
-	listenOwner = @listen_owner || node['php-fpm']['listen_owner']
-	listenGroup = @listen_group || node['php-fpm']['listen_group']
-%>
-
 ;listen.owner = nobody
-<% unless listenOwner.nil? %>
-listen.owner = <%= listenOwner %>
+<% unless @listen_owner.nil? %>
+listen.owner = <%= @listen_owner %>
 <% end %>
 
 ;listen.group = nobody
-<% unless listenGroup.nil? %>
-listen.group = <%= listenGroup %>
+<% unless @listen_group.nil? %>
+listen.group = <%= @listen_group %>
 <% end %>
 
 listen.mode = <%= @listen_mode || "0660" %>
