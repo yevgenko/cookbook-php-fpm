@@ -18,9 +18,7 @@
 # limitations under the License.
 #
 
-if node['php-fpm']['skip_repository_install'] == false
-  include_recipe 'php-fpm::repository'
-end
+include_recipe 'php-fpm::repository' unless node['php-fpm']['skip_repository_install']
 
 service_provider = nil
 if node['platform'] == 'ubuntu' and node['platform_version'].to_f >= 13.10
