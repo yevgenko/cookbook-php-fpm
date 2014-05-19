@@ -36,6 +36,9 @@ define :php_fpm_pool, :template => "pool.conf.erb", :enable => true do
       variables(
         :pool_name => pool_name,
         :listen => params[:listen],
+        :listen_owner => params[:listen_owner] || node['php-fpm']['listen_owner'],
+        :listen_group => params[:listen_group] || node['php-fpm']['listen_group'],
+        :listen_mode => params[:listen_mode] || node['php-fpm']['listen_mode'],
         :allowed_clients => params[:allowed_clients],
         :user => params[:user],
         :group => params[:group],
@@ -46,6 +49,7 @@ define :php_fpm_pool, :template => "pool.conf.erb", :enable => true do
         :max_spare_servers => params[:max_spare_servers],
         :max_requests => params[:max_requests],
         :catch_workers_output => params[:catch_workers_output],
+        :security_limit_extensions => params[:security_limit_extensions] || node['php-fpm']['security_limit_extensions'],
         :php_options => params[:php_options] || {},
         :params => params
       )

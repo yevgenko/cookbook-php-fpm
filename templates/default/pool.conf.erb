@@ -41,9 +41,18 @@ listen = <%= @listen || "/var/run/php-fpm-#{@pool_name}.sock" %>
 ; BSD-derived systems allow connections regardless of permissions.
 ; Default Values: user and group are set as the running user
 ;                 mode is set to 0666
+
 ;listen.owner = nobody
+<% unless @listen_owner.nil? %>
+listen.owner = <%= @listen_owner %>
+<% end %>
+
 ;listen.group = nobody
-listen.mode = 0660
+<% unless @listen_group.nil? %>
+listen.group = <%= @listen_group %>
+<% end %>
+
+listen.mode = <%= @listen_mode || "0660" %>
 
 ; List of ipv4 addresses of FastCGI clients which are allowed to connect.
 ; Equivalent to the FCGI_WEB_SERVER_ADDRS environment variable in the original
@@ -360,6 +369,7 @@ catch_workers_output = <%= @catch_workers_output || "no" %>
 ; Note: set an empty value to allow all extensions.
 ; Default Value: .php
 ;security.limit_extensions = .php .php3 .php4 .php5
+security.limit_extensions = <%=@security_limit_extensions || ".php" %>
 
 ; Pass environment variables like LD_LIBRARY_PATH. All $VARIABLEs are taken from
 ; the current environment.
