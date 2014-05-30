@@ -20,11 +20,6 @@
 
 include_recipe 'php-fpm::repository' unless node['php-fpm']['skip_repository_install']
 
-service_provider = nil
-if node['platform'] == 'ubuntu' and node['platform_version'].to_f >= 13.10
-  service_provider = ::Chef::Provider::Service::Upstart
-end
-
 if node['php-fpm']['package_name'].nil?
   if platform_family?("rhel")
     php_fpm_package_name = "php-fpm"
@@ -37,4 +32,22 @@ end
 
 package php_fpm_package_name do
   action :upgrade
+end
+
+if node['php-fpm']['service_name'].nil?
+  php_fpm_service_name = php_fpm_package_name
+else
+  php_fpm_service_name = node['php-fpm']['service_name']
+end
+
+service_provider = nil
+if node['platform'] == 'ubuntu' and node['platform_version'].to_f >= 13.10
+  service_provider = ::Chef::Provider::Service::Upstart
+end
+
+service "php-fpm" do
+  provider service_provider if service_provider
+  service_name php_fpm_service_name
+  supports :start => true, :stop => true, :restart => true, :reload => true
+  action [ :enable, :start ]
 end

@@ -26,19 +26,6 @@ template node['php-fpm']['conf_file'] do
   notifies :restart, "service[php-fpm]"
 end
 
-if node['php-fpm']['service_name'].nil?
-  php_fpm_service_name = php_fpm_package_name
-else
-  php_fpm_service_name = node['php-fpm']['service_name']
-end
-
-service "php-fpm" do
-  provider service_provider if service_provider
-  service_name php_fpm_service_name
-  supports :start => true, :stop => true, :restart => true, :reload => true
-  action [ :enable, :start ]
-end
-
 if node['php-fpm']['pools']
   node['php-fpm']['pools'].each do |pool|
     php_fpm_pool pool[:name] do
