@@ -18,7 +18,6 @@
 # limitations under the License.
 #
 
-
 case node['platform']
 when 'ubuntu'
   if node['platform_version'].to_f <= 10.04

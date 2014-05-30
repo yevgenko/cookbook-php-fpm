@@ -1,7 +1,7 @@
 #
 # Author::  Seth Chisamore (<schisamo@opscode.com>)
 # Cookbook Name:: php-fpm
-# Recipe:: default
+# Recipe:: package
 #
 # Copyright 2011, Opscode, Inc.
 #
@@ -18,5 +18,23 @@
 # limitations under the License.
 #
 
-include_recipe 'php-fpm::install'
-include_recipe 'php-fpm::configure'
+include_recipe 'php-fpm::repository' unless node['php-fpm']['skip_repository_install']
+
+service_provider = nil
+if node['platform'] == 'ubuntu' and node['platform_version'].to_f >= 13.10
+  service_provider = ::Chef::Provider::Service::Upstart
+end
+
+if node['php-fpm']['package_name'].nil?
+  if platform_family?("rhel")
+    php_fpm_package_name = "php-fpm"
+  else
+    php_fpm_package_name = "php5-fpm"
+  end
+else
+  php_fpm_package_name = node['php-fpm']['package_name']
+end
+
+package php_fpm_package_name do
+  action :upgrade
+end
