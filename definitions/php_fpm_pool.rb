@@ -21,8 +21,6 @@ define :php_fpm_pool, :template => "pool.conf.erb", :enable => true do
 
   pool_name = params[:name]
 
-  include_recipe "php-fpm"
-
   conf_file = "#{node['php-fpm']['pool_conf_dir']}/#{pool_name}.conf"
 
   if params[:enable]
