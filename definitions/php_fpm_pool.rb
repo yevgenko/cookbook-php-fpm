@@ -34,8 +34,8 @@ define :php_fpm_pool, :template => "pool.conf.erb", :enable => true do
       variables(
         :pool_name => pool_name,
         :listen => params[:listen],
-        :listen_owner => params[:listen_owner] || node['php-fpm']['listen_owner'],
-        :listen_group => params[:listen_group] || node['php-fpm']['listen_group'],
+        :listen_owner => params[:listen_owner] || node['php-fpm']['listen_owner'] || node['php-fpm']['user'],
+        :listen_group => params[:listen_group] || node['php-fpm']['listen_group'] || node['php-fpm']['group'],
         :listen_mode => params[:listen_mode] || node['php-fpm']['listen_mode'],
         :allowed_clients => params[:allowed_clients],
         :user => params[:user],
