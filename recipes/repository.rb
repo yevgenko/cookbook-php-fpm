@@ -40,33 +40,33 @@ when 'debian'
   # http://www.dotdeb.org/instructions/
   if node.platform_version.to_f >= 7.0
     apt_repository "dotdeb" do
-      uri "http://packages.dotdeb.org"
+      uri node['php-fpm']['dotdeb_repository']['uri']
       distribution "stable"
       components ['all']
-      key "http://www.dotdeb.org/dotdeb.gpg"
+      key node['php-fpm']['dotdeb_repository']['key']
       action :add
     end
   elsif node.platform_version.to_f >= 6.0
     apt_repository "dotdeb" do
-      uri "http://packages.dotdeb.org"
+      uri node['php-fpm']['dotdeb_repository']['uri']
       distribution "squeeze"
       components ['all']
-      key "http://www.dotdeb.org/dotdeb.gpg"
+      key node['php-fpm']['dotdeb_repository']['key']
       action :add
     end
   else
     apt_repository "dotdeb" do
-      uri "http://packages.dotdeb.org"
+      uri node['php-fpm']['dotdeb_repository']['uri']
       distribution "oldstable"
       components ['all']
-      key "http://www.dotdeb.org/dotdeb.gpg"
+      key node['php-fpm']['dotdeb_repository']['key']
       action :add
     end
     apt_repository "dotdeb-php53" do
-      uri "http://php53.dotdeb.org"
+      uri node['php-fpm']['dotdeb-php53_repository']['uri']
       distribution "oldstable"
       components ['all']
-      key "http://www.dotdeb.org/dotdeb.gpg"
+      key node['php-fpm']['dotdeb_repository']['key']
       action :add
     end
   end
