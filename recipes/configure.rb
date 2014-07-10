@@ -26,6 +26,10 @@ template node['php-fpm']['conf_file'] do
   notifies :restart, "service[php-fpm]"
 end
 
+php_fpm_pool 'www' do
+  enable false
+end if node['php-fpm']['pools'].find { |v| v[:name] == 'www' }.nil?
+
 if node['php-fpm']['pools']
   node['php-fpm']['pools'].each do |pool|
     php_fpm_pool pool[:name] do
