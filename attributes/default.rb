@@ -41,3 +41,7 @@ default['php-fpm']['skip_repository_install'] = false
 
 default['php-fpm']['yum_url'] = "http://rpms.famillecollet.com/enterprise/$releasever/remi/$basearch/"
 default['php-fpm']['yum_mirrorlist'] = "http://rpms.famillecollet.com/enterprise/$releasever/remi/mirror"
+
+default['php-fpm']['dotdeb_repository']['uri'] = "http://packages.dotdeb.org"
+default['php-fpm']['dotdeb_repository']['key'] = "http://www.dotdeb.org/dotdeb.gpg"
+default['php-fpm']['dotdeb-php53_repository']['uri'] = "http://php53.dotdeb.org"
