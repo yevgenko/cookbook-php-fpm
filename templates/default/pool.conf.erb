@@ -257,7 +257,9 @@ pm.max_requests = <%= @max_requests || 500 %>
 
 ; The access log file
 ; Default: not set
+<% if @access_log %>
 access.log = <%= node['php-fpm']['log_dir'] %>/$pool.access.log
+<% end %>
 
 ; The access log format.
 ; The following syntax is allowed

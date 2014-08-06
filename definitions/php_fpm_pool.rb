@@ -48,6 +48,7 @@ define :php_fpm_pool, :template => "pool.conf.erb", :enable => true do
         :max_requests => params[:max_requests],
         :catch_workers_output => params[:catch_workers_output],
         :security_limit_extensions => params[:security_limit_extensions] || node['php-fpm']['security_limit_extensions'],
+        :access_log => params[:access_log] || false,
         :php_options => params[:php_options] || {},
         :params => params
       )
