@@ -28,7 +28,7 @@ end
 
 php_fpm_pool 'www' do
   enable false
-end if node['php-fpm']['pools'].find { |v| v[:name] == 'www' }.nil?
+end
 
 if node['php-fpm']['pools']
   node['php-fpm']['pools'].each do |pool|
