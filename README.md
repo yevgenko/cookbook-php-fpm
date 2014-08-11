@@ -38,18 +38,18 @@ name "php-fpm"
 description "php fpm role"
 run_list "recipe[php-fpm]"
 override_attributes "php-fpm" => {
-	"pools" => [
-		{
-			:name => "default"
+	"pools" => {
+		"default" => {
+			:enable => true
 		},
-		{
-			:name => "www",
+		"www" => {
+			:enable => "true",
 			:cookbook => "another-cookbook",
 			:process_manager => "dynamic",
 			:max_requests => 5000,
 			:php_options => { 'php_admin_flag[log_errors]' => 'on', 'php_admin_value[memory_limit]' => '32M' }
 		}
-	]
+	}
 }
 ```
 
