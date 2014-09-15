@@ -330,7 +330,7 @@ pm.max_requests = <%= @max_requests || 500 %>
 ; does not stop script execution for some reason. A value of '0' means 'off'.
 ; Available units: s(econds)(default), m(inutes), h(ours), or d(ays)
 ; Default Value: 0
-;request_terminate_timeout = 0
+request_terminate_timeout = <%=@request_terminate_timeout || 0 %>
 
 ; Set open file descriptor rlimit.
 ; Default Value: system defined value
