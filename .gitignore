@@ -1,7 +1,19 @@
-metadata.json
+*~
+*#
+.#*
+\#*#
+.*.sw[a-z]
+*.un~
+pkg/
 
-# IDE project settings
-.idea
+# Berkshelf
+.vagrant
+/cookbooks
+Berksfile.lock
 
-.sandbox
-.bundle
+# Bundler
+bin/*
+.bundle/*
+
+.kitchen/
+.kitchen.local.yml
