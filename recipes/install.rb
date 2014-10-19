@@ -46,6 +46,8 @@ if node['platform'] == 'ubuntu' and node['platform_version'].to_f >= 13.10
   service_provider = ::Chef::Provider::Service::Upstart
 end
 
+directory node['php-fpm']['log_dir']
+
 service "php-fpm" do
   provider service_provider if service_provider
   service_name php_fpm_service_name
