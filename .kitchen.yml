@@ -14,3 +14,7 @@ suites:
     run_list:
       - recipe[php-fpm::default]
     attributes:
+      php-fpm:
+        pools:
+          - name: web
+            listen: '127.0.0.1:9081'
