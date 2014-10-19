@@ -50,6 +50,7 @@ define :php_fpm_pool, :template => "pool.conf.erb", :enable => true do
         :security_limit_extensions => params[:security_limit_extensions] || node['php-fpm']['security_limit_extensions'],
         :access_log => params[:access_log] || false,
         :php_options => params[:php_options] || {},
+        :request_terminate_timeout => params[:request_terminate_timeout],
         :params => params
       )
       notifies :restart, "service[php-fpm]"
