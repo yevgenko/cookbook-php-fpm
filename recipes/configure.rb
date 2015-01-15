@@ -26,7 +26,7 @@ template node['php-fpm']['conf_file'] do
   notifies :restart, "service[php-fpm]"
 end
 
-if !node['php-fpm']['pools'].key?('www')
+unless node['php-fpm']['pools'].key?('www')
   php_fpm_pool 'www' do
     enable false
   end
