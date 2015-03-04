@@ -32,7 +32,7 @@ else
 end
 
 package php_fpm_package_name do
-  action :upgrade
+  action :install
 end
 
 if node['php-fpm']['service_name'].nil?
