@@ -32,7 +32,8 @@ else
 end
 
 package php_fpm_package_name do
-  action :upgrade
+  action node['php-fpm']['installation_action']
+  version node['php-fpm']['version'] if node['php-fpm']['version']
 end
 
 if node['php-fpm']['service_name'].nil?
