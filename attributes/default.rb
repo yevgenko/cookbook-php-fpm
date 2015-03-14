@@ -1,4 +1,5 @@
-if node.platform_family == "rhel"
+case node["platform_family"]
+when "rhel", "fedora"
   user = "apache"
   group = "apache"
   conf_dir = "/etc/php.d"
@@ -42,8 +43,13 @@ default['php-fpm']['skip_repository_install'] = false
 default['php-fpm']['installation_action'] = :install
 default['php-fpm']['version'] = nil
 
-default['php-fpm']['yum_url'] = "http://rpms.famillecollet.com/enterprise/$releasever/remi/$basearch/"
-default['php-fpm']['yum_mirrorlist'] = "http://rpms.famillecollet.com/enterprise/$releasever/remi/mirror"
+case node["platform_family"]
+when "rhel"
+  default['php-fpm']['yum_url'] = "http://rpms.famillecollet.com/enterprise/$releasever/remi/$basearch/"
+  default['php-fpm']['yum_mirrorlist'] = "http://rpms.famillecollet.com/enterprise/$releasever/remi/mirror"
+when "fedora"
+  default['php-fpm']['skip_repository_install'] = true
+end
 
 default['php-fpm']['dotdeb_repository']['uri'] = "http://packages.dotdeb.org"
 default['php-fpm']['dotdeb_repository']['key'] = "http://www.dotdeb.org/dotdeb.gpg"
