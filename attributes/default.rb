@@ -39,6 +39,8 @@ default['php-fpm']['pools'] = {
 }
 
 default['php-fpm']['skip_repository_install'] = false
+default['php-fpm']['installation_action'] = :install
+default['php-fpm']['version'] = ''
 
 default['php-fpm']['yum_url'] = "http://rpms.famillecollet.com/enterprise/$releasever/remi/$basearch/"
 default['php-fpm']['yum_mirrorlist'] = "http://rpms.famillecollet.com/enterprise/$releasever/remi/mirror"
