@@ -24,7 +24,7 @@ The `apt_repository` and `yum_repository` LWRPs are used from these cookbooks to
 Description
 ==========
 
-Creates a PHP-FPM configuration file at the path specified.  Meant to be deployed with a service init scheme/supervisor such as runit.  Please see the `application::php-fpm` recipe for a complete working example. In depth information about PHP-FPM's configuration values can be [found in the PHP-FPM documentation](http://php-fpm.org/wiki/Configuration_File).
+Creates a PHP-FPM configuration file at the path specified.  Meant to be deployed with a service init scheme/supervisor such as runit.  Please see the `application::php-fpm` recipe for a complete working example. In depth information about PHP-FPM's configuration values can be [found in the PHP-FPM documentation](http://php.net/manual/en/install.fpm.configuration.php).
 
 Usage
 =====
