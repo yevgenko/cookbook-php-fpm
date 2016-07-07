@@ -38,10 +38,18 @@ when 'debian'
   # Configure Dotdeb repos
   # TODO: move this to it's own 'dotdeb' cookbook?
   # http://www.dotdeb.org/instructions/
-  if node.platform_version.to_f >= 7.0
+  if node.platform_version.to_f >= 8.0
     apt_repository "dotdeb" do
       uri node['php-fpm']['dotdeb_repository']['uri']
-      distribution "stable"
+      distribution "jessie"
+      components ['all']
+      key node['php-fpm']['dotdeb_repository']['key']
+      action :add
+    end
+  elsif node.platform_version.to_f >= 7.0
+    apt_repository "dotdeb" do
+      uri node['php-fpm']['dotdeb_repository']['uri']
+      distribution "wheezy"
       components ['all']
       key node['php-fpm']['dotdeb_repository']['key']
       action :add
