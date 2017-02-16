@@ -1,9 +1,10 @@
 ---
 driver:
-  name: vagrant
+  name: docker
+  use_sudo: false
 
 provisioner:
-  name: chef_solo
+  name: chef_zero
 
 platforms:
   - name: ubuntu-12.04
@@ -13,7 +14,7 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[php-fpm::default]
+      - recipe[php-fpm::test]
     attributes:
       php-fpm:
         pools:

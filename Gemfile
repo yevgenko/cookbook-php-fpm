@@ -15,6 +15,6 @@ gem 'berkshelf'
 # end
 
 gem 'test-kitchen'
-gem 'kitchen-vagrant'
+gem 'kitchen-docker', '~> 2.6'
 gem 'stove'
 gem 'serverspec'
