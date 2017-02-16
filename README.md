@@ -77,6 +77,52 @@ php_fpm_pool "www" do
 end
 ```
 
+Development
+===========
+
+### Requirements
+
+* [Docker](https://www.docker.com/)
+
+### Setup
+
+To get all dependencies:
+
+```
+bundle install
+```
+
+### Test
+
+To see available platforms:
+
+```
+bundle exec rake -T
+```
+
+To test particular platform:
+
+```
+bundle exec rake kitchen:default-ubuntu-1604
+```
+
+To test all platforms:
+
+```
+bundle exec rake kitchen:all
+```
+
+### Publishing (maintainers only!)
+
+Bump version in metadata.rb, commit and push to master!
+
+```
+bundle exec rake publish
+```
+
+as a result new tag will be created and pushed to github as well as new version
+will be published on https://supermarket.chef.io
+
 License and Author
 ==================
 
