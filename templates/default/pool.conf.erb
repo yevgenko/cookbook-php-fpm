@@ -19,8 +19,8 @@
 ; Unix user/group of processes
 ; Note: The user is mandatory. If the group is not set, the default user's group
 ;       will be used.
-user = <%= @user || node['php-fpm']['user'] %>
-group = <%= @group || node['php-fpm']['group'] %>
+user = <%= @user %>
+group = <%= @group %>
 
 ; The address on which to accept FastCGI requests.
 ; Valid syntaxes are:
@@ -30,7 +30,7 @@ group = <%= @group || node['php-fpm']['group'] %>
 ;                            specific port;
 ;   '/path/to/unix/socket' - to listen on a unix socket.
 ; Note: This value is mandatory.
-listen = <%= @listen || "/var/run/php-fpm-#{@pool_name}.sock" %>
+listen = <%= @listen %>
 
 ; Set listen(2) backlog.
 ; Default Value: 128 (-1 on FreeBSD and OpenBSD)
@@ -52,7 +52,7 @@ listen.owner = <%= @listen_owner %>
 listen.group = <%= @listen_group %>
 <% end %>
 
-listen.mode = <%= @listen_mode || "0660" %>
+listen.mode = <%= @listen_mode %>
 
 ; List of ipv4 addresses of FastCGI clients which are allowed to connect.
 ; Equivalent to the FCGI_WEB_SERVER_ADDRS environment variable in the original
@@ -94,7 +94,7 @@ listen.allowed_clients = <%= @allowed_clients ? ([@allowed_clients].flatten.join
 ;             pm.process_idle_timeout   - The number of seconds after which
 ;                                         an idle process will be killed.
 ; Note: This value is mandatory.
-pm = <%= @process_manager || "ondemand" %>
+pm = <%= @process_manager %>
 
 ; The number of child processes to be created when pm is set to 'static' and the
 ; maximum number of child processes when pm is set to 'dynamic' or 'ondemand'.
@@ -105,7 +105,7 @@ pm = <%= @process_manager || "ondemand" %>
 ; forget to tweak pm.* to fit your needs.
 ; Note: Used when pm is set to 'static', 'dynamic' or 'ondemand'
 ; Note: This value is mandatory.
-pm.max_children = <%= @max_children || 50 %>
+pm.max_children = <%= @max_children %>
 
 <% if @process_manager == "dynamic" %>
 ; The number of child processes created on startup.
@@ -118,12 +118,12 @@ pm.start_servers = <%= @start_servers %>
 ; The desired minimum number of idle server processes.
 ; Note: Used only when pm is set to 'dynamic'
 ; Note: Mandatory when pm is set to 'dynamic'
-pm.min_spare_servers = <%= @min_spare_servers || 5 %>
+pm.min_spare_servers = <%= @min_spare_servers %>
 
 ; The desired maximum number of idle server processes.
 ; Note: Used only when pm is set to 'dynamic'
 ; Note: Mandatory when pm is set to 'dynamic'
-pm.max_spare_servers = <%= @max_spare_servers || 35 %>
+pm.max_spare_servers = <%= @max_spare_servers %>
 <% end %>
 
 <% if @process_manager == "ondemand" %>
@@ -137,7 +137,7 @@ pm.max_spare_servers = <%= @max_spare_servers || 35 %>
 ; This can be useful to work around memory leaks in 3rd party libraries. For
 ; endless request processing specify '0'. Equivalent to PHP_FCGI_MAX_REQUESTS.
 ; Default Value: 0
-pm.max_requests = <%= @max_requests || 500 %>
+pm.max_requests = <%= @max_requests %>
 
 ; The URI to view the FPM status page. If this value is not set, no URI will be
 ; recognized as a status page. It shows the following informations:
@@ -320,7 +320,7 @@ access.log = <%= node['php-fpm']['log_dir'] %>/$pool.access.log
 ; Default Value: not set
 ; Note: slowlog is mandatory if request_slowlog_timeout is set
 <% if @slowlog %>
-slowlog = <%=@slowlog || 'log/$pool.log.slow' %>
+slowlog = <%= @slowlog %>
 <% else %>
 ;slowlog = log/$pool.log.slow
 <% end %>
@@ -330,7 +330,7 @@ slowlog = <%=@slowlog || 'log/$pool.log.slow' %>
 ; Available units: s(econds)(default), m(inutes), h(ours), or d(ays)
 ; Default Value: 0
 <% if @request_slowlog_timeout %>
-request_slowlog_timeout = <%=@request_slowlog_timeout || 0 %>
+request_slowlog_timeout = <%=@request_slowlog_timeout %>
 <% else %>
 ;request_slowlog_timeout = 0
 <% end %>
@@ -340,7 +340,7 @@ request_slowlog_timeout = <%=@request_slowlog_timeout || 0 %>
 ; does not stop script execution for some reason. A value of '0' means 'off'.
 ; Available units: s(econds)(default), m(inutes), h(ours), or d(ays)
 ; Default Value: 0
-request_terminate_timeout = <%=@request_terminate_timeout || 0 %>
+request_terminate_timeout = <%=@request_terminate_timeout %>
 
 ; Set open file descriptor rlimit.
 ; Default Value: system defined value
@@ -372,7 +372,7 @@ request_terminate_timeout = <%=@request_terminate_timeout || 0 %>
 ; Note: on highloaded environement, this can cause some delay in the page
 ; process time (several ms).
 ; Default Value: no
-catch_workers_output = <%= @catch_workers_output || "no" %>
+catch_workers_output = <%= @catch_workers_output %>
 
 <% if node['platform'] != 'ubuntu' && node['platform_version'] != '10.04' %>
 ; Limits the extensions of the main script FPM will allow to parse. This can
@@ -382,7 +382,7 @@ catch_workers_output = <%= @catch_workers_output || "no" %>
 ; Note: set an empty value to allow all extensions.
 ; Default Value: .php
 ;security.limit_extensions = .php .php3 .php4 .php5
-security.limit_extensions = <%=@security_limit_extensions || ".php" %>
+security.limit_extensions = <%=@security_limit_extensions %>
 <% end %>
 
 ; Pass environment variables like LD_LIBRARY_PATH. All $VARIABLEs are taken from
