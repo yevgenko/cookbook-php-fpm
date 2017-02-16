@@ -123,6 +123,11 @@ bundle exec rake publish
 as a result new tag will be created and pushed to github as well as new version
 will be published on https://supermarket.chef.io
 
+Contributing
+===========
+
+Please do not bump version when proposing a change, no other rules ;)
+
 License and Author
 ==================
 
