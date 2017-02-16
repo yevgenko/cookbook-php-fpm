@@ -1,0 +1,11 @@
+sudo: required
+dist: trusty
+language: ruby
+
+services:
+  - docker
+
+script:
+- bundle exec docker version
+- bundle exec kitchen --version
+- bundle exec rake kitchen:all
