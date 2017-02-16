@@ -8,6 +8,4 @@ services:
 script:
 - bundle exec docker version
 - bundle exec kitchen --version
-- bundle exec rake kitchen:default-ubuntu-1604
-- bundle exec rake kitchen:default-ubuntu-1204
-- bundle exec rake kitchen:default-centos-67
+- bundle exec rake kitchen:all
