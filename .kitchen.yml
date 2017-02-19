@@ -13,7 +13,10 @@ platforms:
       privileged: true
       run_command: init
   - name: centos-6.7
-  - name: fedora-23
+  # - name: fedora-24
+  #   driver:
+  #     privileged: true
+  #     run_command: init
 
 suites:
   - name: default
