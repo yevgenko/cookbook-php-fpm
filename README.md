@@ -133,7 +133,7 @@ Please do not bump version when proposing a change, no other rules ;)
 License and Author
 ==================
 
-Author:: Seth Chisamore (<schisamo@opscode.com>)
+Author:: Seth Chisamore (<schisamo@chef.io>)
 
 Copyright:: 2011, Opscode, Inc
 
