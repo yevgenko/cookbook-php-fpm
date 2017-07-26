@@ -24,17 +24,17 @@ when 'debian'
   # TODO: move this to it's own 'dotdeb' cookbook?
   # http://www.dotdeb.org/instructions/
   if node['platform_version'].to_f >= 8.0
-    apt_repository "dotdeb" do
+    apt_repository 'dotdeb' do
       uri node['php-fpm']['dotdeb_repository']['uri']
-      distribution "jessie"
+      distribution 'jessie'
       components ['all']
       key node['php-fpm']['dotdeb_repository']['key']
       action :add
     end
   elsif node['platform_version'].to_f >= 7.0
-    apt_repository "dotdeb" do
+    apt_repository 'dotdeb' do
       uri node['php-fpm']['dotdeb_repository']['uri']
-      distribution "wheezy"
+      distribution 'wheezy'
       components ['all']
       key node['php-fpm']['dotdeb_repository']['key']
       action :add
