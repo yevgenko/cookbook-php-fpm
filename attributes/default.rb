@@ -19,9 +19,7 @@ else
   end
   conf_dir = "#{php_conf_dir}/fpm/conf.d"
   pool_conf_dir = "#{php_conf_dir}/fpm/pool.d"
-  if node['platform'] == "ubuntu"
-    conf_file = "#{php_conf_dir}/fpm/php-fpm.conf"
-  end
+  conf_file = "#{php_conf_dir}/fpm/php-fpm.conf"
   error_log = "/var/log/#{php_fpm_name}.log"
   pid = "/var/run/#{php_fpm_name}.pid"
 end
