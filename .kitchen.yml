@@ -1,22 +1,25 @@
----
 driver:
-  name: docker
-  use_sudo: false
+  name: vagrant
 
 provisioner:
   name: chef_zero
+  deprecations_as_errors: true
+
+verifier:
+  name: inspec
 
 platforms:
-  - name: ubuntu-12.04
+  - name: amazon-linux
+    driver_config:
+      box: mvbcoding/awslinux
+  - name: centos-6.9
+  - name: centos-7.3
+  - name: debian-7.11
+  - name: debian-8.8
+  - name: fedora-25
+  - name: opensuse-leap-42.2
+  - name: ubuntu-14.04
   - name: ubuntu-16.04
-    driver:
-      privileged: true
-      run_command: init
-  - name: centos-6.7
-  # - name: fedora-24
-  #   driver:
-  #     privileged: true
-  #     run_command: init
 
 suites:
   - name: default
