@@ -10,3 +10,6 @@ chef_version     ">= 12.14"
 %w{ debian ubuntu centos redhat fedora amazon oracle scientific }.each do |os|
   supports os
 end
+
+source_url 'https://github.com/yevgenko/cookbook-php-fpm'
+issues_url 'https://github.com/yevgenko/cookbook-php-fpm/issues'
