@@ -1,11 +1,48 @@
 sudo: required
 dist: trusty
-language: ruby
 
-services:
-  - docker
+addons:
+  apt:
+    sources:
+      - chef-current-trusty
+    packages:
+      - chefdk
 
-script:
-- bundle exec docker version
-- bundle exec kitchen --version
-- bundle exec rake kitchen:all
+# Don't `bundle install` which takes about 1.5 mins
+install: echo "skip bundle install"
+
+branches:
+  only:
+    - master
+
+services: docker
+
+env:
+  matrix:
+  - INSTANCE=default-centos-6
+  - INSTANCE=default-centos-6 CHEF_VERSION=12.14.89
+  - INSTANCE=default-centos-7
+  - INSTANCE=default-centos-7 CHEF_VERSION=12.14.89
+  - INSTANCE=default-ubuntu-1404
+  - INSTANCE=default-ubuntu-1404 CHEF_VERSION=12.14.89
+  - INSTANCE=default-ubuntu-1604
+  - INSTANCE=default-ubuntu-1604 CHEF_VERSION=12.14.89
+  - INSTANCE=default-debian-7
+  - INSTANCE=default-debian-7 CHEF_VERSION=12.14.89
+  - INSTANCE=default-debian-8
+  - INSTANCE=default-debian-8 CHEF_VERSION=12.14.89
+
+before_script:
+  - sudo iptables -L DOCKER || ( echo "DOCKER iptables chain missing" ; sudo iptables -N DOCKER )
+  - eval "$(chef shell-init bash)"
+  - chef --version
+  - cookstyle --version
+  - foodcritic --version
+
+script: KITCHEN_LOCAL_YAML=.kitchen.dokken.yml kitchen verify ${INSTANCE}
+
+matrix:
+  include:
+    - script:
+      - chef exec delivery local all
+      env: UNIT_AND_LINT=1

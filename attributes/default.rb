@@ -1,29 +1,25 @@
-case node["platform_family"]
-when "rhel", "fedora"
-  user = "apache"
-  group = "apache"
-  conf_dir = "/etc/php.d"
-  pool_conf_dir = "/etc/php-fpm.d"
-  conf_file = "/etc/php-fpm.conf"
-  error_log = "/var/log/php-fpm/error.log"
-  pid = "/var/run/php-fpm/php-fpm.pid"
+case node['platform_family']
+when 'rhel', 'fedora'
+  user = 'apache'
+  group = 'apache'
+  conf_dir = '/etc/php.d'
+  pool_conf_dir = '/etc/php-fpm.d'
+  conf_file = '/etc/php-fpm.conf'
+  error_log = '/var/log/php-fpm/error.log'
+  pid = '/var/run/php-fpm/php-fpm.pid'
 else
-  user = "www-data"
-  group = "www-data"
-  if platform?('ubuntu') and node['platform_version'].to_f >= 16.04
-    php_conf_dir = "/etc/php/7.0"
-    php_fpm_name = "php7.0-fpm"
+  user = 'www-data'
+  group = 'www-data'
+  if platform?('ubuntu') && node['platform_version'].to_f >= 16.04
+    php_conf_dir = '/etc/php/7.0'
+    php_fpm_name = 'php7.0-fpm'
   else
-    php_conf_dir = "/etc/php5"
-    php_fpm_name = "php5-fpm"
+    php_conf_dir = '/etc/php5'
+    php_fpm_name = 'php5-fpm'
   end
   conf_dir = "#{php_conf_dir}/fpm/conf.d"
   pool_conf_dir = "#{php_conf_dir}/fpm/pool.d"
-  if node['platform'] == "ubuntu" and node['platform_version'].to_f <= 10.04
-    conf_file = "#{php_conf_dir}/fpm/php5-fpm.conf"
-  else
-    conf_file = "#{php_conf_dir}/fpm/php-fpm.conf"
-  end
+  conf_file = "#{php_conf_dir}/fpm/php-fpm.conf"
   error_log = "/var/log/#{php_fpm_name}.log"
   pid = "/var/run/#{php_fpm_name}.pid"
 end
@@ -36,7 +32,7 @@ default['php-fpm']['conf_file'] = conf_file
 default['php-fpm']['pid'] = pid
 default['php-fpm']['log_dir'] = '/var/log/php-fpm'
 default['php-fpm']['error_log'] = error_log
-default['php-fpm']['log_level'] = "notice"
+default['php-fpm']['log_level'] = 'notice'
 default['php-fpm']['emergency_restart_threshold'] = 0
 default['php-fpm']['emergency_restart_interval'] = 0
 default['php-fpm']['process_control_timeout'] = 0
@@ -50,26 +46,26 @@ default['php-fpm']['request_terminate_timeout'] = 0
 default['php-fpm']['catch_workers_output'] = 'no'
 default['php-fpm']['security_limit_extensions'] = '.php'
 default['php-fpm']['listen_mode'] = '0660'
-default['php-fpm']['listen'] = "/var/run/php-fpm-%{pool_name}.sock"
+default['php-fpm']['listen'] = '/var/run/php-fpm-%{pool_name}.sock'
 
 default['php-fpm']['pools'] = {
-  "www" => {
-    :enable => true
-  }
+  'www' => {
+    enable: true,
+  },
 }
 
 default['php-fpm']['skip_repository_install'] = false
 default['php-fpm']['installation_action'] = :install
 default['php-fpm']['version'] = nil
 
-case node["platform_family"]
-when "rhel"
-  default['php-fpm']['yum_url'] = "http://rpms.famillecollet.com/enterprise/$releasever/remi/$basearch/"
-  default['php-fpm']['yum_mirrorlist'] = "http://rpms.famillecollet.com/enterprise/$releasever/remi/mirror"
-when "fedora"
+case node['platform_family']
+when 'rhel'
+  default['php-fpm']['yum_url'] = 'http://rpms.famillecollet.com/enterprise/$releasever/remi/$basearch/'
+  default['php-fpm']['yum_mirrorlist'] = 'http://rpms.famillecollet.com/enterprise/$releasever/remi/mirror'
+when 'fedora'
   default['php-fpm']['skip_repository_install'] = true
 end
 
-default['php-fpm']['dotdeb_repository']['uri'] = "http://packages.dotdeb.org"
-default['php-fpm']['dotdeb_repository']['key'] = "http://www.dotdeb.org/dotdeb.gpg"
-default['php-fpm']['dotdeb-php53_repository']['uri'] = "http://php53.dotdeb.org"
+default['php-fpm']['dotdeb_repository']['uri'] = 'http://packages.dotdeb.org'
+default['php-fpm']['dotdeb_repository']['key'] = 'http://www.dotdeb.org/dotdeb.gpg'
+default['php-fpm']['dotdeb-php53_repository']['uri'] = 'http://php53.dotdeb.org'
