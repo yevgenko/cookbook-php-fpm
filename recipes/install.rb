@@ -23,6 +23,8 @@ include_recipe 'php-fpm::repository' unless node['php-fpm']['skip_repository_ins
 php_fpm_package_name = if node['php-fpm']['package_name'].nil?
                          if platform_family?('rhel', 'fedora')
                            'php-fpm'
+                         elsif platform?('ubuntu') && node['platform_version'].to_f >= 18.04
+                           'php7.2-fpm'
                          elsif platform?('ubuntu') && node['platform_version'].to_f >= 16.04
                            'php7.0-fpm'
                          else
