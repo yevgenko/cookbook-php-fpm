@@ -10,7 +10,10 @@ when 'rhel', 'fedora'
 else
   user = 'www-data'
   group = 'www-data'
-  if platform?('ubuntu') && node['platform_version'].to_f >= 16.04
+  if platform?('ubuntu') && node['platform_version'].to_f >= 18.04
+    php_conf_dir = '/etc/php/7.2'
+    php_fpm_name = 'php7.2-fpm'
+  elsif platform?('ubuntu') && node['platform_version'].to_f >= 16.04
     php_conf_dir = '/etc/php/7.0'
     php_fpm_name = 'php7.0-fpm'
   else
